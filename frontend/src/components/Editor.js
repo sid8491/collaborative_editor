@@ -10,6 +10,7 @@ import 'codemirror/mode/markdown/markdown';
 import { Controlled as ControlledEditor } from 'react-codemirror2';
 
 let socket;
+let userName;
 
 function Editor() {
     const [value, setValue] = useState('')
@@ -17,9 +18,8 @@ function Editor() {
 
     useEffect(() => {
         console.log('page loaded');
-        const userName = getUsername();
-        console.log(userName);
-        console.log(window.location.pathname);
+        userName = getUsername();
+        console.log(`my username is ${userName}`);
         const websocketUrl = `ws://127.0.0.1:8000/ws${window.location.pathname}/`;
         socket = new W3CWebSocket(websocketUrl);
 
@@ -41,15 +41,15 @@ function Editor() {
 
         socket.onmessage = (message) => {
             const data = JSON.parse(message.data);
-            console.log(data);
 
             if (data.event === 'chat_joined') {
                 console.log(data.name + ' joined');
             }
 
             if (data.event === 'value_update') {
-                console.log(data.name + ' ' + data.value);
+                // console.log(data.name + ' ' + data.value);
                 if (userName !== data.name) {
+                    console.log('updating value');
                     setValue(data.value);
                 }
             }
@@ -59,7 +59,12 @@ function Editor() {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            console.log(value);
+            // console.log(value);
+            socket.send(JSON.stringify({
+                'name': userName,
+                'event': 'value_update',
+                'value': value
+            }));
         }, 500)
 
         return () => clearTimeout(timeout)
