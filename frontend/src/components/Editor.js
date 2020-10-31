@@ -43,13 +43,13 @@ function Editor() {
             const data = JSON.parse(message.data);
             console.log(data);
 
-            if (data.event == 'chat_joined') {
+            if (data.event === 'chat_joined') {
                 console.log(data.name + ' joined');
             }
 
-            if (data.event == 'value_update') {
+            if (data.event === 'value_update') {
                 console.log(data.name + ' ' + data.value);
-                if (userName != data.name) {
+                if (userName !== data.name) {
                     setValue(data.value);
                 }
             }
