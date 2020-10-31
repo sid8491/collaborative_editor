@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+}
+
+.pane {
+  height: 5vh;
+}
+
+.code-mirror-wrapper {
+  height: 85vh;
+}
+
+.CodeMirror {
+  min-height: 100% !important;
+}
