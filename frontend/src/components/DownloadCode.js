@@ -1,9 +1,9 @@
 import React from 'react'
 
-function DownloadCode() {
+function DownloadCode(props) {
     return (
         <div>
-            <button>Download</button>
+            <button onClick={props.onClick}>Download</button>
         </div>
     )
 }

@@ -54,10 +54,10 @@ function Editor() {
                 if (userName !== data.name) {
                     console.log('updating value');
                     setValue(data.value);
+                    setLanguage(data.language);
                 }
             }
         };
-
     }, []);
 
     useEffect(() => {
@@ -66,11 +66,11 @@ function Editor() {
                 socket.send(JSON.stringify({
                     'name': userName,
                     'event': 'value_update',
-                    'value': value
+                    'value': value,
+                    'language': language
                 }));
             }
         }, 1000)
-
         return () => clearTimeout(timeout)
     }, [value]);
 
@@ -81,24 +81,45 @@ function Editor() {
     const selectLanguageChange = (value) => {
         setLanguage(value)
     }
+
+    const fileExtensionMapping = {
+        'python': 'py',
+        'xml': 'html',
+        'css': 'css',
+        'javascript': 'js',
+        'markdown': '.md'
+    }
+
+    const downloadTxtFile = () => {
+        const curTime = new Date().toTimeString().slice(0,9).replace(/:/g, '').trim();
+        alert(curTime);
+        const element = document.createElement("a");
+        const file = new Blob(
+            [value],
+            {type: 'text/plain; charset=utf-8'}
+        );
+        element.href = URL.createObjectURL(file);
+        element.download = `editor-${curTime}.${fileExtensionMapping[language]}`;
+        document.body.appendChild(element);
+        element.click();
+    }
+
+
     return (
         <div>
             <div className="editor-container"> 
                 <div className="pane container-fluid">
-                <div class="row">
-                    <div class="col-sm">
-                        <SelectLanguage onChange={selectLanguageChange} />
+                    <div class="row">
+                        <div class="col-sm">
+                            <SelectLanguage onChange={selectLanguageChange} />
+                        </div>
+                        <div class="col-sm">
+                            <Share />
+                        </div>
+                        <div class="col-sm">
+                            <DownloadCode onClick={downloadTxtFile} />
+                        </div>
                     </div>
-                    <div class="col-sm">
-                        <Share />
-                    </div>
-                    <div class="col-sm">
-                        <DownloadCode />
-                    </div>
-                </div>
-                    
-                    
-                    
                 </div>
                 <ControlledEditor
                     onBeforeChange={handleChange}
@@ -115,6 +136,8 @@ function Editor() {
             </div>
         </div>
     )
+
+    
 }
 
 
