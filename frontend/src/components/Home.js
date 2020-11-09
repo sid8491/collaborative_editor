@@ -15,7 +15,7 @@ function Home() {
                 <hr className="my-4" />
                 <div className="text-center">
                 <button type="button" className="btn btn-primary btn-lg font-weight-bold">
-                    <Link to={{ pathname: `/editor/${getRoomId()}`, state: {userName: 'test_username'}}} className="text-light text-decoration-none">
+                    <Link to={{ pathname: `/new`, state: {userName: 'test_username'}}} className="text-light text-decoration-none">
                         CREATE YOUR ROOM
                     </Link>
                 </button>
@@ -23,16 +23,6 @@ function Home() {
             </div>
         </div>
     )
-}
-
-function getRoomId() {
-    var length = 20;
-    var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var result = '';
-    for ( var i = 0; i < length; i++ ) {
-        result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
-    }
-    return result;
 }
 
 export default Home;

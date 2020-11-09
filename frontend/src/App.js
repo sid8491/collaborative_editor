@@ -1,6 +1,7 @@
 import './App.css';
 import Navbar from './components/Navbar'
 import Home from './components/Home'
+import New from './components/New'
 import Editor from './components/Editor'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 
@@ -11,6 +12,7 @@ function App() {
         <Navbar />
         <Switch>
           <Route path='/' exact component={Home} />
+          <Route path='/new' exact component={New} />
           <Route path='/editor/:id' exact component={Editor} />
         </Switch>
       </div>
