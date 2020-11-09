@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import SelectLanguage from './SelectLanguage';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/material.css';
@@ -14,7 +15,7 @@ let userName;
 
 function Editor() {
     const [value, setValue] = useState('')
-    const language = "css"
+    const [language, setLanguage] = useState('javascript');
 
     useEffect(() => {
         console.log('page loaded');
@@ -59,13 +60,14 @@ function Editor() {
 
     useEffect(() => {
         const timeout = setTimeout(() => {
-            // console.log(value);
-            socket.send(JSON.stringify({
-                'name': userName,
-                'event': 'value_update',
-                'value': value
-            }));
-        }, 500)
+            if (value) {
+                socket.send(JSON.stringify({
+                    'name': userName,
+                    'event': 'value_update',
+                    'value': value
+                }));
+            }
+        }, 1000)
 
         return () => clearTimeout(timeout)
     }, [value]);
@@ -73,11 +75,15 @@ function Editor() {
     const handleChange = (editor, data, value) => {
         setValue(value)
     }
+
+    const selectLanguageChange = (e) => {
+        setLanguage(e)
+    }
     return (
         <div>
-            <div className="editor-container">
+            <div className="editor-container"> 
                 <div className="pane">
-                    Language
+                    <SelectLanguage onChange={selectLanguageChange} />
                 </div>
                 <ControlledEditor
                     onBeforeChange={handleChange}
