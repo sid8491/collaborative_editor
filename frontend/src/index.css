@@ -4,6 +4,9 @@ body {
 
 .pane {
   height: 5vh;
+  text-align: center;
+  padding-top: 15px;
+  background-color: #343a40;
 }
 
 .code-mirror-wrapper {

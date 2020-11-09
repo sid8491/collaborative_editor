@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SelectLanguage from './SelectLanguage';
+import Share from './Share';
+import DownloadCode from './DownloadCode';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/material.css';
@@ -76,14 +78,27 @@ function Editor() {
         setValue(value)
     }
 
-    const selectLanguageChange = (e) => {
-        setLanguage(e)
+    const selectLanguageChange = (value) => {
+        setLanguage(value)
     }
     return (
         <div>
             <div className="editor-container"> 
-                <div className="pane">
-                    <SelectLanguage onChange={selectLanguageChange} />
+                <div className="pane container-fluid">
+                <div class="row">
+                    <div class="col-sm">
+                        <SelectLanguage onChange={selectLanguageChange} />
+                    </div>
+                    <div class="col-sm">
+                        <Share />
+                    </div>
+                    <div class="col-sm">
+                        <DownloadCode />
+                    </div>
+                </div>
+                    
+                    
+                    
                 </div>
                 <ControlledEditor
                     onBeforeChange={handleChange}
