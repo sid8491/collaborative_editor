@@ -8,11 +8,7 @@ function Share() {
 
     return (
         <div>
-            <button onClick={copyLink}>Copy Link</button>
-
-            <div class="toast" role="alert" aria-live="polite" aria-atomic="true" data-delay="10000">
-                <div role="alert" aria-live="assertive" aria-atomic="true">...</div>
-            </div>
+            <button onClick={copyLink} className='btn btn-light'>Copy Link</button>
         </div>
     )
 }
