@@ -78,8 +78,14 @@ function Editor() {
         setValue(value)
     }
 
-    const selectLanguageChange = (value) => {
-        setLanguage(value)
+    const selectLanguageChange = (language_value) => {
+        setLanguage(language_value);
+        socket.send(JSON.stringify({
+            'name': userName,
+            'event': 'value_update',
+            'value': value,
+            'language': language_value
+        }));
     }
 
     const fileExtensionMapping = {
