@@ -30,6 +30,10 @@ frontend/build
 __pycache__
 db.sqlite3
 media
+static
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
 
 # Python # 
 *.py[cod] 
