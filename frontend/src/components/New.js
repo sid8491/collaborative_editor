@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 function New() {
     const history = useHistory();
     const forwardToEditor = () => {
-        history.push(`/editor/${getRoomId()}`);
+        history.push(`/editor/${getRoomId()}/`);
     }
 
     useEffect(() => {

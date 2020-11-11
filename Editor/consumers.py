@@ -31,6 +31,8 @@ class EditorConsumer(AsyncWebsocketConsumer):
         json_data = json.loads(text_data)
         if json_data.get('event') in ['chat_joined', 'value_update']:
             await self.save_data(json_data)
+        if json_data.get('event') == 'chat_joined':
+            text_data = await self.get_data(json_data)
         await self.channel_layer.group_send(
             self.room_group_name,
             {
@@ -40,13 +42,14 @@ class EditorConsumer(AsyncWebsocketConsumer):
         )
 
     async def send_message(self, event):
+        print(f"Sending Data: {event['value']}")
         await self.send(event['value'])
 
     @database_sync_to_async
     def save_data(self, data):
         if data.get('event') == 'chat_joined':
             doc_save, created = EditorContent.objects.get_or_create(doc_id=self.room_group_name, defaults={
-                'created_at': datetime.datetime.now(), 
+                'created_at': datetime.datetime.now(),
                 'created_by': data.get('name')
             })
         elif data.get('event') == 'value_update':
@@ -56,6 +59,11 @@ class EditorConsumer(AsyncWebsocketConsumer):
                 'updated_at': datetime.datetime.now(),
                 'updated_by': data.get('name')
             })
-        print(f"created: {created} . user: {data.get('name')}")
-        print('save done')
 
+
+    @database_sync_to_async
+    def get_data(self, data):
+        db_data = EditorContent.objects.get(doc_id=self.room_group_name)
+        data['value'] = db_data.content
+        data['language'] = db_data.language
+        return json.dumps(data)

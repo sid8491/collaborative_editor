@@ -20,10 +20,9 @@ function Editor() {
     const [language, setLanguage] = useState('javascript');
 
     useEffect(() => {
-        console.log('page loaded');
         userName = getUsername();
-        console.log(`my username is ${userName}`);
-        const websocketUrl = `ws://127.0.0.1:8000/ws${window.location.pathname}/`;
+        console.log(`Username ${userName}`);
+        const websocketUrl = `ws://127.0.0.1:8000/ws${window.location.pathname}`;
         socket = new W3CWebSocket(websocketUrl);
 
         socket.onopen = () => {
@@ -47,10 +46,13 @@ function Editor() {
 
             if (data.event === 'chat_joined') {
                 console.log(data.name + ' joined');
+                if (userName === data.name) {
+                    setValue(data.value);
+                    setLanguage(data.language);
+                }
             }
 
             if (data.event === 'value_update') {
-                // console.log(data.name + ' ' + data.value);
                 if (userName !== data.name) {
                     console.log('updating value');
                     setValue(data.value);
@@ -98,7 +100,6 @@ function Editor() {
 
     const downloadTxtFile = () => {
         const curTime = new Date().toTimeString().slice(0,9).replace(/:/g, '').trim();
-        alert(curTime);
         const element = document.createElement("a");
         const file = new Blob(
             [value],
@@ -115,14 +116,14 @@ function Editor() {
         <div>
             <div className="editor-container"> 
                 <div className="pane container-fluid">
-                    <div class="row">
-                        <div class="col-sm">
-                            <SelectLanguage onChange={selectLanguageChange} />
+                    <div className="row">
+                        <div className="col-sm">
+                            <SelectLanguage onChange={selectLanguageChange} defaultValue={language} />
                         </div>
-                        <div class="col-sm">
+                        <div className="col-sm">
                             <Share />
                         </div>
-                        <div class="col-sm">
+                        <div className="col-sm">
                             <DownloadCode onClick={downloadTxtFile} />
                         </div>
                     </div>
@@ -142,8 +143,6 @@ function Editor() {
             </div>
         </div>
     )
-
-    
 }
 
 
