@@ -50,14 +50,16 @@ class EditorConsumer(AsyncWebsocketConsumer):
         if data.get('event') == 'chat_joined':
             doc_save, created = EditorContent.objects.get_or_create(doc_id=self.room_group_name, defaults={
                 'created_at': datetime.datetime.now(),
-                'created_by': data.get('name')
+                'created_by': data.get('name'),
+                'expire_time': datetime.datetime.now() + datetime.timedelta(days=1)
             })
         elif data.get('event') == 'value_update':
             doc_save, created = EditorContent.objects.update_or_create(doc_id=self.room_group_name, defaults={
                 'language': data.get('language'),
                 'content': data.get('value'),
                 'updated_at': datetime.datetime.now(),
-                'updated_by': data.get('name')
+                'updated_by': data.get('name'),
+                'expire_time': datetime.datetime.now() + datetime.timedelta(days=1)
             })
 
 

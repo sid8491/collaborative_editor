@@ -9,6 +9,7 @@ class EditorContent(models.Model):
     content = models.TextField(blank=True)
     updated_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_by = models.CharField(max_length=20, blank=True)
+    expire_time = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return self.doc_id
