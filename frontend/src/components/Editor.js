@@ -22,7 +22,15 @@ function Editor() {
     useEffect(() => {
         userName = getUsername();
         console.log(`Username ${userName}`);
-        const websocketUrl = `ws://127.0.0.1:8000/ws${window.location.pathname}`;
+        let websocketUrl = `ws://127.0.0.1:8000/ws${window.location.pathname}`;
+        console.log(websocketUrl);
+        if (websocketUrl.endsWith('//')) {
+            websocketUrl = websocketUrl.replace(/\/$/, '')
+        }
+        if (!websocketUrl.endsWith('/')) {
+            websocketUrl = websocketUrl + '/'
+        }
+        console.log(websocketUrl);
         socket = new W3CWebSocket(websocketUrl);
 
         socket.onopen = () => {
