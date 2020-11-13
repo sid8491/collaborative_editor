@@ -72,7 +72,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'CollaborativeEditor.wsgi.application'
-ASGI_APPLICATION = "CollaborativeEditor.asgi.application"
+ASGI_APPLICATION = "CollaborativeEditor.routing.application"
 
 
 # Database

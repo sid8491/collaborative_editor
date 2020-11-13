@@ -47,25 +47,31 @@ class EditorConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def save_data(self, data):
-        if data.get('event') == 'chat_joined':
-            doc_save, created = EditorContent.objects.get_or_create(doc_id=self.room_group_name, defaults={
-                'created_at': datetime.datetime.now(),
-                'created_by': data.get('name'),
-                'expire_time': datetime.datetime.now() + datetime.timedelta(days=1)
-            })
-        elif data.get('event') == 'value_update':
-            doc_save, created = EditorContent.objects.update_or_create(doc_id=self.room_group_name, defaults={
-                'language': data.get('language'),
-                'content': data.get('value'),
-                'updated_at': datetime.datetime.now(),
-                'updated_by': data.get('name'),
-                'expire_time': datetime.datetime.now() + datetime.timedelta(days=1)
-            })
+        try:
+            if data.get('event') == 'chat_joined':
+                doc_save, created = EditorContent.objects.get_or_create(doc_id=self.room_group_name, defaults={
+                    'created_at': datetime.datetime.now(),
+                    'created_by': data.get('name'),
+                    'expire_time': datetime.datetime.now() + datetime.timedelta(days=1)
+                })
+            elif data.get('event') == 'value_update':
+                doc_save, created = EditorContent.objects.update_or_create(doc_id=self.room_group_name, defaults={
+                    'language': data.get('language'),
+                    'content': data.get('value'),
+                    'updated_at': datetime.datetime.now(),
+                    'updated_by': data.get('name'),
+                    'expire_time': datetime.datetime.now() + datetime.timedelta(days=1)
+                })
+        except:
+            pass
 
 
     @database_sync_to_async
     def get_data(self, data):
-        db_data = EditorContent.objects.get(doc_id=self.room_group_name)
-        data['value'] = db_data.content
-        data['language'] = db_data.language
-        return json.dumps(data)
+        try:
+            db_data = EditorContent.objects.get(doc_id=self.room_group_name)
+            data['value'] = db_data.content
+            data['language'] = db_data.language
+            return json.dumps(data)
+        except:
+            pass
