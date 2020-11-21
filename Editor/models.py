@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 class EditorContent(models.Model):
     doc_id = models.CharField(max_length=30, unique=True)
